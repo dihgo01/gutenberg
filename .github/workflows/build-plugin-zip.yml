@@ -82,10 +82,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
+          tag_name: ${{ env.VERSION }}
           release_name: ${{ steps.get_release_version.outputs.version }}
           draft: true
-          prerelease: ${{ contains(github.ref, 'rc') }}
+          prerelease: ${{ contains(env.VERSION, 'rc') }}
           body_path: changelog.txt
 
       - name: Upload Release Asset
