@@ -46,6 +46,7 @@ jobs:
           node-version: 14.x
 
       - name: Update plugin version
+        if: startsWith(github.event.inputs.version, 'v')
         run: |
           VERSION_REGEX=" \* Version: [0-9]\+\.[0-9]\+\.[0-9]\+\s*"
           sed -i "s/${VERSION_REGEX}/ * Version: ${VERSION}/g" gutenberg.php
@@ -53,6 +54,7 @@ jobs:
           cat <<< $(jq --tab --arg version "$VERSION" '.version = $version' package-lock.json) > package-lock.json
 
       - name: Commit the version bump
+        if: startsWith(github.event.inputs.version, 'v')
         run: |
             git config user.name Gutenberg Repository Automation
             git config user.email gutenberg@wordpress.org
