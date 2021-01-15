@@ -56,7 +56,7 @@ jobs:
       - name: Commit the version bump
         if: startsWith(github.event.inputs.version, 'v')
         run: |
-            git config user.name Gutenberg Repository Automation
+            git config user.name "Gutenberg Repository Automation"
             git config user.email gutenberg@wordpress.org
             git add gutenberg.php package.json package-lock.json
             git commit -m "Bump plugin version to $VERSION"
