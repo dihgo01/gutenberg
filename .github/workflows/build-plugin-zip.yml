@@ -16,6 +16,9 @@ on:
         description: 'Plugin version to release (must start with a "v")'
         required: true
 
+env:
+  VERSION: ${{ github.event.inputs.version || github.ref }}
+
 jobs:
   build:
     name: Build Release Artifact
@@ -57,9 +60,7 @@ jobs:
     name: Create Release Draft and Attach Asset
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.event.inputs.version, 'v') || startsWith(github.ref, 'refs/tags/v')
-    env:
-      VERSION: ${{ github.event.inputs.version || github.ref }}
+    if: startsWith(env.VERSION, 'v')
     steps:
       - name: Set Release Version
         id: get_release_version
