@@ -66,8 +66,6 @@ export default function useAutohide( clientId, innerBlocks, ref ) {
 		isHidden: state.visibilityMap[ block.clientId ],
 	} ) );
 
-	console.log( updatedBlocks );
-
 	useDispatch( ( dispatch ) =>
 		dispatch( 'core/block-editor' ).replaceInnerBlocks(
 			clientId,
