@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Enhancement
+
+-   Migrate from `nodegit` to `simple-git`.
+
 ## 3.0.0 (2020-12-17)
 
 ### Breaking Changes
