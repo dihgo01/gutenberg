@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- Lint TypeScript files as part of `lint-js`. [#27143](https://github.com/WordPress/gutenberg/pull/27143)
+
 ### Enhancements
 
 -   Make `check-licenses` command compatible with npm v7 ([#28909](https://github.com/WordPress/gutenberg/pull/28909)).
