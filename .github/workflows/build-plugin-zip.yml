@@ -48,10 +48,13 @@ jobs:
       - name: Update plugin version
         if: startsWith(github.event.inputs.version, 'v')
         run: |
-          VERSION_REGEX=" \* Version: [0-9]\+\.[0-9]\+\.[0-9]\+\s*"
-          sed -i "s/${VERSION_REGEX}/ * Version: ${VERSION#v}/g" gutenberg.php
           cat <<< $(jq --tab --arg version "${VERSION#v}" '.version = $version' package.json) > package.json
           cat <<< $(jq --tab --arg version "${VERSION#v}" '.version = $version' package-lock.json) > package-lock.json
+          VERSION_REGEX=" \* Version: [0-9]\+\.[0-9]\+\.[0-9]\+\s*"
+          sed -i "s/${VERSION_REGEX}/ * Version: ${VERSION#v}/g" gutenberg.php
+          OLD_VERSION_REGEX='Gutenberg \K([0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?)'
+          OLD_VERSION=$(grep -oP "$OLD_VERSION_REGEX" readme.txt)
+          sed -i "s/${OLD_VERSION}/${VERSION#v}/g" readme.txt
 
       - name: Commit the version bump
         if: startsWith(github.event.inputs.version, 'v')
