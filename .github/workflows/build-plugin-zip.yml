@@ -76,6 +76,20 @@ jobs:
           name: gutenberg-plugin
           path: ./gutenberg.zip
 
+      - name: Build release notes draft
+        if: startsWith(github.event.inputs.version, 'v')
+        run: |
+          IFS='.' read -r -a VERSION_ARRAY <<< "${VERSION#v}"
+          MILESTONE="Gutenberg ${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}"
+          npm run changelog -- --milestone="$MILESTONE" > release-notes.txt
+          sed -ie '1,6d' release-notes.txt
+
+      - name: Upload release notes artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-notes
+          path: ./release-notes.txt
+
   create-release:
     name: Create Release Draft and Attach Asset
     needs: build
@@ -91,11 +105,10 @@ jobs:
         with:
           name: gutenberg-plugin
 
-      - name: Extract Changelog for Release
-        run: |
-          unzip gutenberg.zip changelog.txt
-          CHANGELOG_REGEX="/=\s[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?\s=/"
-          awk -i inplace "$CHANGELOG_REGEX"'{p++;next} p==2{exit} p>=1' changelog.txt
+      - name: Download Release Notes Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: release-notes
 
       - name: Create Release Draft
         id: create_release
@@ -107,7 +120,7 @@ jobs:
           release_name: ${{ steps.get_release_version.outputs.version }}
           draft: true
           prerelease: ${{ contains(env.VERSION, 'rc') }}
-          body_path: changelog.txt
+          body_path: release-notes.txt
 
       - name: Upload Release Asset
         id: upload-release-asset
