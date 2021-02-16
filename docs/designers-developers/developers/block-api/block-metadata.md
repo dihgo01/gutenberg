@@ -32,7 +32,7 @@ To register a new block type using metadata that can be shared between codebase 
 	},
 	"usesContext": [ "groupId" ],
 	"supports": {
-		"align": true,
+		"align": true
 	},
 	"styles": [
 		{ "name": "default", "label": "Default", "isDefault": true },
@@ -49,6 +49,8 @@ To register a new block type using metadata that can be shared between codebase 
 	"style": "file:./build/style.css"
 }
 ```
+
+The same file is also used when [submitting block to Block Directory](/docs/designers-developers/developers/tutorials/create-block/submitting-to-block-directory.md).
 
 ## Block API
 
